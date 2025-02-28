@@ -1,12 +1,24 @@
 import { GraduationCap } from "lucide-react";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Tabs , TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../../components/ui/tabs";
 import CommonForm from "../../components/common-form";
 import { signInFormControls, signUpFormControls } from "../../config";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardDescription,
+} from "../../components/ui/card";
 
 function AuthPage() {
-  const [activeTab, setActiveTab] = useState("singin");
+  const [activeTab, setActiveTab] = useState("signin");
 
   function handleTabChange(value) {
     setActiveTab(value);
@@ -25,7 +37,7 @@ function AuthPage() {
       <div className="flex items-center justify-center min-h-screen bg-background">
         <Tabs
           value={activeTab}
-          defaultValue="singin"
+          defaultValue="signin"
           onValueChange={handleTabChange}
           className="w-full max-w-md"
         >
@@ -34,10 +46,36 @@ function AuthPage() {
             <TabsTrigger value="signup">Sign Up</TabsTrigger>
           </TabsList>
           <TabsContent value="signin">
-          <CommonForm formControls={signInFormControls} />
+            <Card className="p-6 space-y-4">
+              <CardHeader>
+                <CardTitle>Sign in to your account</CardTitle>
+                <CardDescription>
+                  Enter your email and password to access your account
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <CommonForm
+                  formControls={signInFormControls}
+                  buttonText={"Sign In"}
+                />
+              </CardContent>
+            </Card>
           </TabsContent>
           <TabsContent value="signup">
-            <CommonForm formControls={signUpFormControls} />
+            <Card className="p-6 space-y-4">
+              <CardHeader>
+                <CardTitle>Create a new account</CardTitle>
+                <CardDescription>
+                  Enter your details to get started
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <CommonForm
+                  formControls={signUpFormControls}
+                  buttonText={"Sign Up"}
+                />
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </div>
