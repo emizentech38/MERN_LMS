@@ -1,5 +1,5 @@
 import { GraduationCap } from "lucide-react";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Tabs,
@@ -16,13 +16,41 @@ import {
   CardContent,
   CardDescription,
 } from "../../components/ui/card";
+import { AuthContext } from "../../context/auth-context";
 
 function AuthPage() {
   const [activeTab, setActiveTab] = useState("signin");
+  const {
+    signInFormData,
+    setSignInFormData,
+    signUpFormData,
+    setSignUpFormData,
+  } = useContext(AuthContext);
+
+  console.log(signInFormData);
 
   function handleTabChange(value) {
     setActiveTab(value);
   }
+
+  // it check the form data is not empty ------------------------->
+  function checkIfSignInFormIsValid() {
+    return (
+      signInFormData &&
+      signInFormData.userEmail !== "" &&
+      signInFormData.password !== ""
+    );
+  }
+
+  function checkIfSignUpFormIsValid() {
+    return (
+      signUpFormData &&
+      signInFormData.userName !== "" &&
+      signUpFormData.userEmail !== "" &&
+      signUpFormData.password !== ""
+    );
+  }
+
 
   return (
     <div className="flex flex-col min-h-screen ">
@@ -45,6 +73,7 @@ function AuthPage() {
             <TabsTrigger value="signin">Sign In</TabsTrigger>
             <TabsTrigger value="signup">Sign Up</TabsTrigger>
           </TabsList>
+          {/* sign IN */}
           <TabsContent value="signin">
             <Card className="p-6 space-y-4">
               <CardHeader>
@@ -57,10 +86,14 @@ function AuthPage() {
                 <CommonForm
                   formControls={signInFormControls}
                   buttonText={"Sign In"}
+                  formData={signInFormData}
+                  setFormData={setSignInFormData}
+                  isButtonDisabled={!checkIfSignInFormIsValid()} // you can also trim down the values
                 />
               </CardContent>
             </Card>
           </TabsContent>
+          {/* sign Up */}
           <TabsContent value="signup">
             <Card className="p-6 space-y-4">
               <CardHeader>
@@ -73,6 +106,9 @@ function AuthPage() {
                 <CommonForm
                   formControls={signUpFormControls}
                   buttonText={"Sign Up"}
+                  formData={signUpFormData}
+                  setFormData={setSignUpFormData}
+                  isButtonDisabled={!checkIfSignUpFormIsValid()} // you can also trim down the values
                 />
               </CardContent>
             </Card>
