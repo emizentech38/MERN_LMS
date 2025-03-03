@@ -20,11 +20,14 @@ import { AuthContext } from "../../context/auth-context";
 
 function AuthPage() {
   const [activeTab, setActiveTab] = useState("signin");
+
+  // data come from the context
   const {
     signInFormData,
     setSignInFormData,
     signUpFormData,
     setSignUpFormData,
+    handleRegisterUser,
   } = useContext(AuthContext);
 
   console.log(signInFormData);
@@ -109,6 +112,7 @@ function AuthPage() {
                   formData={signUpFormData}
                   setFormData={setSignUpFormData}
                   isButtonDisabled={!checkIfSignUpFormIsValid()} // you can also trim down the values
+                  handleSubmit={handleRegisterUser}
                 />
               </CardContent>
             </Card>
