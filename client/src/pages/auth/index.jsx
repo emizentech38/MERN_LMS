@@ -28,6 +28,7 @@ function AuthPage() {
     signUpFormData,
     setSignUpFormData,
     handleRegisterUser,
+    handleLoginUser,
   } = useContext(AuthContext);
 
   console.log(signInFormData);
@@ -53,7 +54,6 @@ function AuthPage() {
       signUpFormData.password !== ""
     );
   }
-
 
   return (
     <div className="flex flex-col min-h-screen ">
@@ -92,6 +92,7 @@ function AuthPage() {
                   formData={signInFormData}
                   setFormData={setSignInFormData}
                   isButtonDisabled={!checkIfSignInFormIsValid()} // you can also trim down the values
+                  handleSubmit={handleLoginUser}
                 />
               </CardContent>
             </Card>
