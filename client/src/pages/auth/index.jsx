@@ -31,7 +31,6 @@ function AuthPage() {
     handleLoginUser,
   } = useContext(AuthContext);
 
-  console.log(signInFormData);
 
   function handleTabChange(value) {
     setActiveTab(value);

@@ -5,6 +5,7 @@ import {
   loginService,
   registerService,
 } from "../../services";
+import { Skeleton } from "../../components/ui/skeleton";
 
 export const AuthContext = createContext(null);
 
@@ -12,9 +13,10 @@ export default function AuthProvider({ children }) {
   const [signInFormData, setSignInFormData] = useState(initialSignInFormData);
   const [signUpFormData, setSignUpFormData] = useState(initialSignUpFormData);
   const [auth, setAuth] = useState({
-    auhenticate: false,
+    authenticate: false,
     user: null,
   });
+  const [loading, setLoading] = useState(true);
 
   async function handleRegisterUser(event) {
     event.preventDefault();
@@ -32,12 +34,12 @@ export default function AuthProvider({ children }) {
         JSON.stringify(data.data.accessToken)
       );
       setAuth({
-        auhenticate: true,
+        authenticate: true,
         user: data.data.user,
       });
     } else {
       setAuth({
-        auhenticate: false,
+        authenticate: false,
         user: null,
       });
     }
@@ -46,25 +48,36 @@ export default function AuthProvider({ children }) {
   // check auth user on the page reload
 
   const checkAuthUser = async () => {
-    const data = await checkAuthService();
-    if (data.success) {
-      setAuth({
-        auhenticate: true,
-        user: data.data.user,
-      });
-    } else {
-      setAuth({
-        auhenticate: false,
-        user: null,
-      });
+    try {
+      const data = await checkAuthService();
+      if (data.success) {
+        setAuth({
+          authenticate: true,
+          user: data.data.user,
+        });
+        setLoading(false);
+      } else {
+        setAuth({
+          authenticate: false,
+          user: null,
+        });
+        setLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+      if (!error?.response?.data?.success) {
+        setAuth({
+          authenticate: false,
+          user: null,
+        });
+        setLoading(false);
+      }
     }
   };
 
   useEffect(() => {
     checkAuthUser();
   }, []);
-
-  console.log(auth)
 
   return (
     <AuthContext.Provider
@@ -75,9 +88,10 @@ export default function AuthProvider({ children }) {
         setSignUpFormData,
         handleRegisterUser,
         handleLoginUser,
+        auth,
       }}
     >
-      {children}
+      {loading ? <Skeleton /> : children}
     </AuthContext.Provider>
   );
 }
