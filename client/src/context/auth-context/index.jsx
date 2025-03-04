@@ -79,6 +79,13 @@ export default function AuthProvider({ children }) {
     checkAuthUser();
   }, []);
 
+  function resetCredentials() {
+    setAuth({
+      authenticate: false,
+      user: null,
+    });
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -89,6 +96,7 @@ export default function AuthProvider({ children }) {
         handleRegisterUser,
         handleLoginUser,
         auth,
+        resetCredentials,
       }}
     >
       {loading ? <Skeleton /> : children}
