@@ -49,7 +49,7 @@ function FormControls({ formControls = [], formData, setFormData }) {
               {getControlItem.options && getControlItem.options.length > 0
                 ? getControlItem.options.map((option) => (
                     <SelectItem key={option.id} value={option.id}>
-                      {option.value}
+                      {option.label}
                     </SelectItem>
                   ))
                 : null}

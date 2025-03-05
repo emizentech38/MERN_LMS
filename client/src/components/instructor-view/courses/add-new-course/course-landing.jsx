@@ -11,6 +11,7 @@ function CourseLanding() {
   const { courseLandingFormData, setCourseLandingFormData } =
     useContext(InstructorContext);
 
+
   return (
     <Card>
       <CardHeader>Course Landing Page</CardHeader>
