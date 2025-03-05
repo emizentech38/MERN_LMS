@@ -4,6 +4,7 @@ import { Label } from "../../../ui/label";
 import { Input } from "../../../ui/input";
 import { InstructorContext } from "../../../../context/instructor-context";
 import { mediaUploadService } from "../../../../services";
+import MediaProgressbar from "../../../media-progress-bar";
 
 function CourseSettings() {
   const {
@@ -11,6 +12,8 @@ function CourseSettings() {
     setCourseLandingFormData,
     mediaUploadProgress,
     setMediaUploadProgress,
+    mediaUploadProgressPercentage,
+    setMediaUploadProgressPercentage,
   } = useContext(InstructorContext);
 
   const handleImageUploadChange = async (event) => {
@@ -22,7 +25,10 @@ function CourseSettings() {
 
       try {
         setMediaUploadProgress(true);
-        const response = await mediaUploadService(imageFormData);
+        const response = await mediaUploadService(
+          imageFormData,
+          setMediaUploadProgressPercentage
+        );
         if (response.success) {
           setCourseLandingFormData({
             ...courseLandingFormData,
@@ -36,17 +42,25 @@ function CourseSettings() {
     }
   };
 
-  console.log(courseLandingFormData)
+  console.log(courseLandingFormData);
 
   return (
     <Card>
       <CardHeader>
         <CardTitle>Course Settings</CardTitle>
       </CardHeader>
+      <div className="p-4">
+        {mediaUploadProgress ? (
+          <MediaProgressbar
+            isMediaUploading={mediaUploadProgress}
+            progress={mediaUploadProgressPercentage}
+          />
+        ) : null}
+      </div>
       <CardContent>
-        {
-          courseLandingFormData?.image ? <img src={courseLandingFormData?.image} /> : null
-        }
+        {courseLandingFormData?.image ? (
+          <img src={courseLandingFormData?.image} />
+        ) : null}
         <div className="flex flex-col gap-3">
           <Label>Upload Course Image</Label>
           <Input
