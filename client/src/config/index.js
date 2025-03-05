@@ -163,3 +163,12 @@ export const courseLandingInitialFormData = {
   image: "",
 };
 
+export const courseCurriculumInitialFormData = [
+  // this is the first lecture
+  {
+    title: "",
+    videoUrl: "",
+    freePreview: "false",
+    public_id: "",
+  },
+];
