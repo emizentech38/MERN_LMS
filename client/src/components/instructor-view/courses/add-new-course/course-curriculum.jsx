@@ -8,6 +8,7 @@ import { Switch } from "../../../ui/switch";
 import { Label } from "../../../ui/label";
 import { mediaUploadService } from "../../../../services";
 import MediaProgressBar from "../../../media-progress-bar";
+import VideoPlayer from "../../../video-player";
 
 function CourseCurriculum() {
   const {
@@ -62,7 +63,10 @@ function CourseCurriculum() {
 
       try {
         setMediaUploadProgress(true);
-        const response = await mediaUploadService(videoFormData ,setMediaUploadProgressPercentage);
+        const response = await mediaUploadService(
+          videoFormData,
+          setMediaUploadProgressPercentage
+        );
         if (response.success) {
           let cpyCourseCurriculumFormData = [...courseCurriculumFormData];
           cpyCourseCurriculumFormData[currentIndex] = {
@@ -88,13 +92,12 @@ function CourseCurriculum() {
       </CardHeader>
       <CardContent>
         <Button onClick={handleNewLecture}>Add Lecture</Button>
-        {
-          mediaUploadProgress ? 
+        {mediaUploadProgress ? (
           <MediaProgressBar
-          isMediaUploading={mediaUploadProgress}
-          progress={mediaUploadProgressPercentage}
-          /> : null
-        }
+            isMediaUploading={mediaUploadProgress}
+            progress={mediaUploadProgressPercentage}
+          />
+        ) : null}
         <div className="mt-4 space-y-4">
           {courseCurriculumFormData.map((curriculumItem, index) => (
             <div className="border p-5 rounded-md">
@@ -121,12 +124,27 @@ function CourseCurriculum() {
                 </div>
               </div>
               <div className="mt-6">
-                <Input
-                  type="file"
-                  accept="video/*"
-                  className="mb-4"
-                  onChange={(event) => handleSingleLectureUpload(event, index)}
-                />
+                {courseCurriculumFormData[index]?.videoUrl ? (
+                  <div className="flex gap-3">
+                    <VideoPlayer
+                      url={courseCurriculumFormData[index]?.videoUrl}
+                      width="450px"
+                      height="200px"
+                    />
+                    <Button>Replace Video</Button>
+
+                    <Button className="bg-red-900">Delete Lecture</Button>
+                  </div>
+                ) : (
+                  <Input
+                    type="file"
+                    accept="video/*"
+                    className="mb-4"
+                    onChange={(event) =>
+                      handleSingleLectureUpload(event, index)
+                    }
+                  />
+                )}
               </div>
             </div>
           ))}
